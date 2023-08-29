@@ -28,10 +28,11 @@ object TeamManager: Listener {
      */
     fun findTeamByName(name: String) = teams.find { it.name == name }
 
+    fun Player.hasTeam() = getTeam() != null
     fun Player.getTeam() = findTeam(this)
     fun Player.isOnSameTeamAs(other: Player) = getTeam() != null && getTeam() == other.getTeam()
 
-    fun createNewTeam(name: String? = null, vararg players: Player): Team {
+    fun createNewTeam(vararg players: Player, name: String? = null): Team {
         val team = Team(ArrayList(players.map { it.uniqueId }), name)
         teams.add(team)
         return team
