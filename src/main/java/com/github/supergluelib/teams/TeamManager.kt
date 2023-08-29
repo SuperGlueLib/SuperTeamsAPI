@@ -28,6 +28,11 @@ object TeamManager: Listener {
      */
     fun findTeamByName(name: String) = teams.find { it.name == name }
 
+    /**
+     * Finds the team with the given id, or null if none is found.
+     */
+    fun findTeamByID(id: Int) = teams.find { it.id == id }
+
     fun Player.hasTeam() = getTeam() != null
     fun Player.getTeam() = findTeam(this)
     fun Player.isOnSameTeamAs(other: Player) = getTeam() != null && getTeam() == other.getTeam()
