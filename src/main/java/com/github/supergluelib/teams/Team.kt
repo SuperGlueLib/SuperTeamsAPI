@@ -9,6 +9,11 @@ data class Team(
     val uuids: ArrayList<UUID> = arrayListOf(),
     val name: String? = null,
 ) {
+    val id = CURRENT_ID++
+
+    companion object {
+        private var CURRENT_ID = 0
+    }
 
     /**
      * An immutable list of all online players in the team,
