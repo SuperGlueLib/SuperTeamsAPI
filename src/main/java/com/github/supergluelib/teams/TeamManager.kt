@@ -17,6 +17,7 @@ object TeamManager: Listener {
     var allowFriendlyFire: Boolean = true
 
     val teams = ArrayList<Team>()
+    fun removeTeam(team: Team) = teams.remove(team)
 
     /**
      * Finds the team of this player, or null if the player is not on a team
@@ -37,7 +38,9 @@ object TeamManager: Listener {
     fun Player.getTeam() = findTeam(this)
     fun Player.isOnSameTeamAs(other: Player) = getTeam() != null && getTeam() == other.getTeam()
 
-    fun createNewTeam(vararg players: Player, name: String? = null): Team {
+    fun getOrCreateTeam(player: Player, teamname: String? = null) = if (player.hasTeam()) player.getTeam()!! else createNewTeam(teamname, player)
+    fun createNewTeam(vararg players: Player) = createNewTeam(null, *players)
+    fun createNewTeam(name: String?, vararg players: Player): Team {
         val team = Team(ArrayList(players.map { it.uniqueId }), name)
         teams.add(team)
         return team

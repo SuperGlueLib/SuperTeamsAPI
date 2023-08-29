@@ -22,6 +22,8 @@ data class Team(
     val players: List<Player>
         get() = uuids.mapNotNull { Bukkit.getPlayer(it) }
 
+    fun isEmpty() = uuids.isEmpty()
+
     operator fun plusAssign(player: Player) { uuids.add(player.uniqueId) }
     fun add(player: Player) = uuids.add(player.uniqueId)
     fun remove(player: Player) = uuids.remove(player.uniqueId)
