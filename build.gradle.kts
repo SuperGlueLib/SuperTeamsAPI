@@ -4,8 +4,10 @@ plugins {
     `maven-publish`
 }
 
+val ver = "0.0.1"
+
 group = "me.superpenguin.superglue"
-version = "0.0.1"
+version = ver
 
 repositories {
     mavenCentral()
@@ -14,4 +16,12 @@ repositories {
 
 dependencies {
     compileOnly("org.spigotmc:spigot-api:1.19.4-R0.1-SNAPSHOT")
+}
+
+publishing.publications.create<MavenPublication>("maven") {
+    groupId = "me.superpenguin.superglue"
+    artifactId = "SuperTeamsAPI"
+    version = ver
+
+    from(components["java"])
 }
