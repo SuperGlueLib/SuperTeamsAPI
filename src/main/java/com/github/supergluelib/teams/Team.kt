@@ -4,9 +4,10 @@ import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.entity.Player
 import java.util.*
+import kotlin.collections.HashSet
 
 open class Team(
-    val uuids: ArrayList<UUID> = arrayListOf(),
+    val uuids: HashSet<UUID> = HashSet(),
     val name: String? = null,
 ) {
     val id = CURRENT_ID++
