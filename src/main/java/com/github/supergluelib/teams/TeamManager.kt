@@ -19,7 +19,7 @@ class TeamManager<T: Team>(val plugin: JavaPlugin): Listener {
     val teams = ArrayList<T>()
     /** @return true if the team was found and removed else false */
     fun removeTeam(team: T) = teams.remove(team)
-    fun addTeam(team: T) { teams.add(team) }
+    fun addTeam(team: T) = teams.add(team).let { team }
 
     // Unfortunately due to the non-singleton distribution of this class, these can only be used within scoped methods
     // But I will keep them around for internal use and anyone who enjoys using .apply {}
