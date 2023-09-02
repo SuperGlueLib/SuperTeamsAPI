@@ -25,6 +25,7 @@ class TeamManager<T: Team>(val plugin: JavaPlugin): Listener {
     // But I will keep them around for internal use and anyone who enjoys using .apply {}
     @JvmName("_hasTeam")
     fun Player.hasTeam() = hasTeam(this)
+    @JvmName("_getTeam")
     fun Player.getTeam() = findTeam(this)
     fun Player.isOnSameTeamAs(other: Player) = areOnSameTeam(this, other)
 
