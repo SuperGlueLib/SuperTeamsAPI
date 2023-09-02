@@ -4,7 +4,7 @@ plugins {
     `maven-publish`
 }
 
-val ver = "0.0.3"
+val ver = "1.0.0"
 
 group = "me.superpenguin.superglue"
 version = ver
