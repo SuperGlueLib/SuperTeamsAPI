@@ -30,10 +30,14 @@ class TeamManager<T: Team>(val plugin: JavaPlugin): Listener {
 
     /** Finds the team of this player, or null if the player is not on a team */
     fun findTeam(player: Player) = teams.find { it.players.contains(player) }
+    /** Clarity method equivalent to [findTeam] */
+    fun getTeam(player: Player) = findTeam(player)
     /** @return true if the player is a part of any team */
     fun hasTeam(player: Player) = player.getTeam() != null
     /** @return true if both players are on the same team, false if either player is not on a team or they are not on the same team */
     fun areOnSameTeam(player1: Player, player2: Player) = player1.getTeam() != null && player1.getTeam() == player2.getTeam()
+    /** @return the player's team, if they are on a team, otherwise creates and registers a new team for them */
+    fun getOrCreateTeam(player: Player, team: () -> T) = player.getTeam() ?: addTeam(team.invoke())
 
     /**
      * Finds a team with the given name, or null if none is found.
