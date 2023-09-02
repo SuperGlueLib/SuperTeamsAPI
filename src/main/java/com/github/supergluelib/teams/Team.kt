@@ -5,7 +5,7 @@ import org.bukkit.Location
 import org.bukkit.entity.Player
 import java.util.*
 
-data class Team(
+open class Team(
     val uuids: ArrayList<UUID> = arrayListOf(),
     val name: String? = null,
 ) {
@@ -17,7 +17,7 @@ data class Team(
 
     /**
      * An immutable list of all online players in the team,
-     * for offline players, and marginally better performance under certain circumstances, use "uuids"
+     * for offline players, and marginally better performance under certain circumstances, use [uuids]
      */
     val players: List<Player>
         get() = uuids.mapNotNull { Bukkit.getPlayer(it) }

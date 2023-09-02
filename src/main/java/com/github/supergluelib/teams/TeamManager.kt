@@ -8,21 +8,31 @@ import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.plugin.java.JavaPlugin
 
-object TeamManager: Listener {
+class TeamManager<T: Team>(val plugin: JavaPlugin): Listener {
 
-    fun setup(plugin: JavaPlugin) {
+    init {
         Bukkit.getPluginManager().registerEvents(this, plugin)
     }
 
     var allowFriendlyFire: Boolean = true
 
-    val teams = ArrayList<Team>()
-    fun removeTeam(team: Team) = teams.remove(team)
+    val teams = ArrayList<T>()
+    /** @return true if the team was found and removed else false */
+    fun removeTeam(team: T) = teams.remove(team)
+    fun addTeam(team: T) { teams.add(team) }
 
-    /**
-     * Finds the team of this player, or null if the player is not on a team
-     */
+    // Unfortunately due to the non-singleton distribution of this class, these can only be used within scoped methods
+    // But I will keep them around for internal use and anyone who enjoys using .apply {}
+    fun Player.hasTeam() = hasTeam(this)
+    fun Player.getTeam() = findTeam(this)
+    fun Player.isOnSameTeamAs(other: Player) = areOnSameTeam(this, other)
+
+    /** Finds the team of this player, or null if the player is not on a team */
     fun findTeam(player: Player) = teams.find { it.players.contains(player) }
+    /** @return true if the player is a part of any team */
+    fun hasTeam(player: Player) = player.getTeam() != null
+    /** @return true if both players are on the same team, false if either player is not on a team or they are not on the same team */
+    fun areOnSameTeam(player1: Player, player2: Player) = player1.getTeam() != null && player1.getTeam() == player2.getTeam()
 
     /**
      * Finds a team with the given name, or null if none is found.
@@ -33,18 +43,6 @@ object TeamManager: Listener {
      * Finds the team with the given id, or null if none is found.
      */
     fun findTeamByID(id: Int) = teams.find { it.id == id }
-
-    fun Player.hasTeam() = getTeam() != null
-    fun Player.getTeam() = findTeam(this)
-    fun Player.isOnSameTeamAs(other: Player) = getTeam() != null && getTeam() == other.getTeam()
-
-    fun getOrCreateTeam(player: Player, teamname: String? = null) = if (player.hasTeam()) player.getTeam()!! else createNewTeam(teamname, player)
-    fun createNewTeam(vararg players: Player) = createNewTeam(null, *players)
-    fun createNewTeam(name: String?, vararg players: Player): Team {
-        val team = Team(ArrayList(players.map { it.uniqueId }), name)
-        teams.add(team)
-        return team
-    }
 
     @EventHandler fun enforceFriendlyFire(event: EntityDamageByEntityEvent) {
         val hurt = event.entity
