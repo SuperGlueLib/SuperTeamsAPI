@@ -21,6 +21,20 @@ class TeamManager<T: Team>(val plugin: JavaPlugin): Listener {
     fun removeTeam(team: T) = teams.remove(team)
     fun addTeam(team: T) = teams.add(team).let { team }
 
+    /**
+     * Removes a player from their current team and deletes the team if it is now empty.
+     *@return the team the player was removed from, or null if they weren't on a team or it is now empty
+     */
+    fun removePlayerFromTeam(player: Player): T? {
+        val team = player.getTeam() ?: return null
+        team.remove(player)
+        if (team.isEmpty()) {
+            removeTeam(team)
+            return null
+        }
+        return team
+    }
+
     // Unfortunately due to the non-singleton distribution of this class, these can only be used within scoped methods
     // But I will keep them around for internal use and anyone who enjoys using .apply {}
     @JvmName("_hasTeam")
