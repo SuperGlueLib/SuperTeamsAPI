@@ -32,6 +32,11 @@ open class Team(
     fun isEmpty() = uuids.isEmpty()
 
     operator fun plusAssign(player: Player) { add(player) }
+
+    fun add(uuid: UUID) {
+        uuids.add(uuid)
+        names.add(Bukkit.getOfflinePlayer(uuid).name!!)
+    }
     fun add(player: Player) {
         uuids.add(player.uniqueId)
         names.add(player.name)
@@ -39,6 +44,10 @@ open class Team(
     fun remove(player: Player): Boolean {
         names.remove(player.name)
         return uuids.remove(player.uniqueId)
+    }
+    fun remove(uuid: UUID): Boolean {
+        names.remove(Bukkit.getOfflinePlayer(uuid).name!!)
+        return uuids.remove(uuid)
     }
 
     fun messageAll(msg: String) = players.forEach { it.sendMessage(msg) }
