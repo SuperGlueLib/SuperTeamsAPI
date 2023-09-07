@@ -8,7 +8,7 @@ import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.plugin.java.JavaPlugin
 
-class TeamManager<T: Team>(val plugin: JavaPlugin): Listener {
+open class TeamManager<T: Team>(val plugin: JavaPlugin): Listener {
 
     init {
         Bukkit.getPluginManager().registerEvents(this, plugin)
@@ -25,7 +25,7 @@ class TeamManager<T: Team>(val plugin: JavaPlugin): Listener {
      * Removes a player from their current team and deletes the team if it is now empty.
      *@return the team the player was removed from, or null if they weren't on a team or it is now empty
      */
-    fun removePlayerFromTeam(player: Player): T? {
+    open fun removePlayerFromTeam(player: Player): T? {
         val team = player.getTeam() ?: return null
         team.remove(player)
         if (team.isEmpty()) {
